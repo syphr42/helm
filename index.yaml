@@ -1,0 +1,15 @@
+apiVersion: v1
+entries:
+  webtts:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2021-03-20T19:41:26.879018163Z"
+    description: WebTTS provides an easy Text-To-Speech service implementation using
+      Pico TTS, Apache, and PHP
+    digest: ce6e4e4baf2b6fe999af7db9c6505c828f63dc26364cc0bfdc8a1f7976c21326
+    name: webtts
+    type: application
+    urls:
+    - https://github.com/syphr42/helm/releases/download/webtts-1.0.2/webtts-1.0.2.tgz
+    version: 1.0.2
+generated: "2021-03-20T19:41:26.879022964Z"
