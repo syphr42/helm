@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "logitech-media-server.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "logitech-media-server.fullname" . }}:{{ .Values.service.ports.httpPort }}']
   restartPolicy: Never
