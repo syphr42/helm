@@ -1,3 +1,8 @@
+## Global Docker image parameters
+##
+# global:
+#   storageClass: myStorageClass
+
 ## Syphr Logitech Media Server image
 ## ref: https://hub.docker.com/r/syphr/logitechmediaserver/tags/
 ##
@@ -101,3 +106,83 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+## Enable persistence using Persistent Volume Claims
+## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+persistence:
+  ## If true, use a Persistent Volume Claim, If false, use emptyDir
+  ##
+  enabled: false
+  # Enable persistence using an existing PVC
+  # existingClaim:
+  # Subdirectory of the volume to mount
+  # subPath:
+  mountPath: /var/lib/squeezeboxserver
+  ## selector can be used to match an existing PersistentVolume
+  ## selector:
+  ##   matchLabels:
+  ##     app: my-app
+  ##
+  selector: {}
+  ## Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  ## Persistent Volume Claim annotations
+  ##
+  annotations:
+  ## Persistent Volume Access Mode
+  ##
+  accessModes:
+    - ReadWriteOnce
+  ## Persistent Volume size
+  ##
+  size: 500Mi
+
+## extraVolumes and extraVolumeMounts allows you to mount other volumes
+## Example Use Cases:
+##  mount music files
+##  mount playlists
+# extraVolumes:
+# - name: collection
+# - name: playlists
+# extraVolumeMounts:
+# - name: collection
+#   mountPath: /mnt/collection
+#   readOnly: true
+# - name: playlists
+#   mountPath: /mnt/playlists
+#   readOnly: true
+
+## Configure extra options for liveness, readiness and startup probes
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
+##
+livenessProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 5
+  successThreshold: 1
+readinessProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 0
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+  successThreshold: 1
+startupProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 30
+  successThreshold: 1
