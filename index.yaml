@@ -1,5 +1,20 @@
 apiVersion: v1
 entries:
+  logitech-media-server:
+  - apiVersion: v2
+    appVersion: 8.1.1
+    created: "2021-04-01T22:33:38.814205388Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.4.2
+    description: Controller for physical and virtual music players
+    digest: 2123bec7ca8378b4ed8be0e2b8a57ff599bf36eb92b90aaeb90884a29a317ae9
+    name: logitech-media-server
+    type: application
+    urls:
+    - https://github.com/syphr42/helm/releases/download/logitech-media-server-1.0.0/logitech-media-server-1.0.0.tgz
+    version: 1.0.0
   webtts:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -12,4 +27,4 @@ entries:
     urls:
     - https://github.com/syphr42/helm/releases/download/webtts-1.0.2/webtts-1.0.2.tgz
     version: 1.0.2
-generated: "2021-03-20T19:41:26.879022964Z"
+generated: "2021-04-01T22:33:38.814214588Z"
