@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "logitech-media-server.fullname" . }}
+  labels:
+    {{- include "logitech-media-server.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if .Values.service.externalIPs }}
+  externalIPs: {{- toYaml .Values.service.externalIPs | nindent 4 }}
+  {{- end }}
+  ports:
+    - name: http
+      port: {{ .Values.service.ports.httpPort }}
+      targetPort: 9000
+      protocol: TCP
+    - name: cli
+      port: {{ .Values.service.ports.cliPort }}
+      targetPort: 9090
+      protocol: TCP
+    - name: control
+      port: {{ .Values.service.ports.controlPort }}
+      targetPort: 3483
+      protocol: TCP
+    - name: discovery
+      port: {{ .Values.service.ports.discoveryPort }}
+      targetPort: 3483
+      protocol: UDP
+  selector:
+    {{- include "logitech-media-server.selectorLabels" . | nindent 4 }}
