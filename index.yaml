@@ -41,4 +41,19 @@ entries:
     urls:
     - https://github.com/syphr42/helm/releases/download/webtts-1.0.2/webtts-1.0.2.tgz
     version: 1.0.2
-generated: "2021-04-02T02:40:26.880299078Z"
+  wekan:
+  - apiVersion: v2
+    appVersion: v5.17
+    created: "2021-04-11T17:13:52.325906478Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.4.2
+    description: Virtual kanban board
+    digest: 0a016e39ab532d34d52f5e5d81cb17f473f8e85d71b6c6628b30fd03ce59bb59
+    name: wekan
+    type: application
+    urls:
+    - https://github.com/syphr42/helm/releases/download/wekan-1.0.0/wekan-1.0.0.tgz
+    version: 1.0.0
+generated: "2021-04-11T17:13:52.325922478Z"
