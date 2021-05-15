@@ -184,3 +184,15 @@ startupProbe:
   timeoutSeconds: 3
   failureThreshold: 30
   successThreshold: 1
+
+  ## Custom Liveness probe
+  ##
+  customLivenessProbe: {}
+
+  ## Custom Readiness probe
+  ##
+  customReadinessProbe: {}
+
+  ## Custom Startup probe
+  ##
+  customStartupProbe: {}
