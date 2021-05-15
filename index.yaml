@@ -3,6 +3,20 @@ entries:
   logitech-media-server:
   - apiVersion: v2
     appVersion: 8.1.1
+    created: "2021-05-15T01:57:35.465220195Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.4.2
+    description: Controller for physical and virtual music players
+    digest: c0dd06463434e5ac284c7e80ce1d613f9b2dce269938b7518ca00b97bd642876
+    name: logitech-media-server
+    type: application
+    urls:
+    - https://github.com/syphr42/helm/releases/download/logitech-media-server-1.0.2/logitech-media-server-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 8.1.1
     created: "2021-04-02T02:40:26.880289578Z"
     dependencies:
     - name: common
@@ -28,6 +42,21 @@ entries:
     type: application
     urls:
     - https://github.com/syphr42/helm/releases/download/logitech-media-server-1.0.0/logitech-media-server-1.0.0.tgz
+    version: 1.0.0
+  openhab:
+  - apiVersion: v2
+    appVersion: 3.0.2
+    created: "2021-05-15T01:57:35.601028393Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.4.2
+    description: Open source automation software for your home
+    digest: fbb85e04aa2666e88ccbacaf1630abd341dadac504c999cbcbf01ddf8e07ef03
+    name: openhab
+    type: application
+    urls:
+    - https://github.com/syphr42/helm/releases/download/openhab-1.0.0/openhab-1.0.0.tgz
     version: 1.0.0
   webtts:
   - apiVersion: v2
@@ -56,4 +85,4 @@ entries:
     urls:
     - https://github.com/syphr42/helm/releases/download/wekan-1.0.0/wekan-1.0.0.tgz
     version: 1.0.0
-generated: "2021-04-11T17:13:52.325922478Z"
+generated: "2021-05-15T01:57:35.601040893Z"
