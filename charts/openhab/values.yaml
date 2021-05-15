@@ -1,0 +1,231 @@
+## Global Docker image parameters
+##
+# global:
+#   storageClass: myStorageClass
+
+## openHAB image
+## ref: https://hub.docker.com/r/openhab/openhab/tags/
+##
+image:
+  repository: openhab/openhab
+  ## Overrides the image tag whose default is the chart appVersion.
+  ##
+  tag: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+## String to override the chart name
+##
+nameOverride: ""
+
+## String to override the full name normally derived from the chart and release names
+##
+fullnameOverride: ""
+
+## openHAB service properties
+##
+service:
+  type: ClusterIP
+  port: 80
+  ## Enable access to the built-in language server
+  ##
+  lsp:
+    enabled: false
+    type: NodePort
+    port: 5007
+    nodePort: 30000
+
+## Ingress parameters
+##
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+## Enable persistence using Persistent Volume Claims
+## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+persistence:
+  ## If true, use a Persistent Volume Claim, If false, use emptyDir
+  ##
+  enabled: false
+  # Enable persistence using an existing PVC
+  # existingClaim:
+  ## selector can be used to match an existing PersistentVolume
+  ## selector:
+  ##   matchLabels:
+  ##     app: my-app
+  ##
+  selector: {}
+  ## Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  ## Persistent Volume Claim annotations
+  ##
+  annotations:
+  ## Persistent Volume Access Mode
+  ##
+  accessModes:
+    - ReadWriteOnce
+  ## Persistent Volume size
+  ##
+  size: 5Gi
+
+## extraVolumes and extraVolumeMounts allows you to mount other volumes
+##
+# extraVolumes:
+# - name: volume1
+# - name: volume2
+# extraVolumeMounts:
+# - name: volume1
+#   mountPath: /mnt/volume1
+#   readOnly: true
+# - name: volume2
+#   mountPath: /mnt/volume2
+#   readOnly: false
+
+## Configure extra options for liveness, readiness and startup probes
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
+##
+livenessProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 5
+  successThreshold: 1
+readinessProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 0
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+  successThreshold: 1
+startupProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 30
+  successThreshold: 1
+
+## Custom Liveness probe
+##
+customLivenessProbe: {}
+
+## Custom Readiness probe
+##
+customReadinessProbe: {}
+
+## Custom Startup probe
+##
+customStartupProbe: {}
+
+## openHAB environment settings
+##
+environment:
+  userId: 1000
+  groupId: 1000
+  timezone: UTC
+  extraJavaOpts:
+
+## An array to add extra env vars
+##
+extraEnvVars: []
+
+## ConfigMap with extra environment variables
+##
+extraEnvVarsCM:
+
+## Secret with extra environment variables
+##
+extraEnvVarsSecret:
+
+gitConfig:
+  ## If enabled, the conf dir will be sync from a Git repo
+  ##
+  enabled: false
+  ## Image settings for the Git sync tool
+  ##
+  image:
+    repository: k8s.gcr.io/git-sync/git-sync
+    tag: v3.3.0
+    pullPolicy: IfNotPresent
+  ## Git server URL
+  ##
+  url:
+  ## Git branch to checkout
+  ##
+  branch: main
+  ## Seconds to wait between syncs after initial
+  ##
+  syncWait: 300
+  ## Secret keys:
+  ##   ssh: private SSH key to authenticate with Git server
+  ##
+  # secretName: git-credentials
+  ## Security context for Git sync
+  ##
+  securityContext:
+    runAsUser: 0

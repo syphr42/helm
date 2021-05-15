@@ -1,0 +1,214 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "openhab.fullname" . }}
+  labels:
+    {{- include "openhab.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "openhab.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "openhab.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "openhab.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.gitConfig.enabled }}
+      initContainers:
+        - name: init-config-git-sync
+          securityContext:
+            {{- toYaml .Values.gitConfig.securityContext | nindent 12 }}
+          image: "{{ .Values.gitConfig.image.repository }}:{{ .Values.gitConfig.image.tag }}"
+          imagePullPolicy: {{ .Values.gitConfig.image.pullPolicy }}
+          volumeMounts:
+          - name: data
+            mountPath: /data
+          {{- if .Values.gitConfig.secretName }}
+          - name: git-secret
+            mountPath: /etc/git-secret
+          {{- end }}
+          env:
+            - name: GIT_SYNC_REPO
+              value: {{ .Values.gitConfig.url | quote }}
+            - name: GIT_SYNC_BRANCH
+              value: {{ .Values.gitConfig.branch | quote }}
+            - name: GIT_SYNC_DEPTH
+              value: "1"
+            - name: GIT_SYNC_ROOT
+              value: /data
+            - name: GIT_SYNC_DEST
+              value: conf
+            - name: GIT_SYNC_SSH
+              value: "true"
+            - name: GIT_KNOWN_HOSTS
+              value: "false"
+            - name: GIT_SYNC_PERMISSION
+              value: "0775"
+            - name: GIT_SYNC_SUBMODULES
+              value: "off"
+            - name: GIT_SYNC_ONE_TIME
+              value: "true"
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          {{- if .Values.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- else if .Values.customLivenessProbe }}
+          livenessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.customLivenessProbe "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- else if .Values.customReadinessProbe }}
+          readinessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.customReadinessProbe "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.startupProbe.enabled }}
+          startupProbe:
+            httpGet:
+              path: {{ .Values.startupProbe.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.startupProbe.successThreshold }}
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+          {{- else if .Values.customStartupProbe }}
+          startupProbe: {{- include "common.tplvalues.render" (dict "value" .Values.customStartupProbe "context" $) | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /openhab/userdata
+              subPath: userdata
+            - name: data
+              mountPath: /openhab/conf
+              subPath: conf
+            - name: data
+              mountPath: /openhab/addons
+              subPath: addons
+            {{- if .Values.extraVolumeMounts }}
+            {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
+            {{- end }}
+          env:
+            - name: USER_ID
+              value: {{ .Values.environment.userId | quote }}
+            - name: GROUP_ID
+              value: {{ .Values.environment.groupId | quote }}
+            - name: EXTRA_JAVA_OPTS
+              value: "-Duser.timezone={{ .Values.environment.timezone }} {{ .Values.environment.extraJavaOpts }}"
+            {{- if .Values.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
+          envFrom:
+            {{- if .Values.extraEnvVarsCM }}
+            - configMapRef:
+                name: {{ .Values.extraEnvVarsCM }}
+            {{- end }}
+            {{- if .Values.extraEnvVarsSecret }}
+            - secretRef:
+                name: {{ .Values.extraEnvVarsSecret }}
+            {{- end }}
+        {{- if .Values.gitConfig.enabled }}
+        - name: config-git-sync
+          securityContext:
+            {{- toYaml .Values.gitConfig.securityContext | nindent 12 }}
+          image: "{{ .Values.gitConfig.image.repository }}:{{ .Values.gitConfig.image.tag }}"
+          imagePullPolicy: {{ .Values.gitConfig.image.pullPolicy }}
+          volumeMounts:
+          - name: data
+            mountPath: /data
+          {{- if .Values.gitConfig.secretName }}
+          - name: git-secret
+            mountPath: /etc/git-secret
+          {{- end }}
+          env:
+            - name: GIT_SYNC_REPO
+              value: {{ .Values.gitConfig.url | quote }}
+            - name: GIT_SYNC_BRANCH
+              value: {{ .Values.gitConfig.branch | quote }}
+            - name: GIT_SYNC_DEPTH
+              value: "1"
+            - name: GIT_SYNC_ROOT
+              value: /data
+            - name: GIT_SYNC_DEST
+              value: conf
+            - name: GIT_SYNC_SSH
+              value: "true"
+            - name: GIT_KNOWN_HOSTS
+              value: "false"
+            - name: GIT_SYNC_PERMISSION
+              value: "0775"
+            - name: GIT_SYNC_SUBMODULES
+              value: "off"
+            - name: GIT_SYNC_ONE_TIME
+              value: "false"
+            - name: GIT_SYNC_WAIT
+              value: {{ .Values.gitConfig.syncWait | quote }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (printf "%s-data" (include "common.names.fullname" .)) }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- if and .Values.gitConfig.enabled .Values.gitConfig.secretName }}
+        - name: git-secret
+          secret:
+            secretName: {{ .Values.gitConfig.secretName }}
+            defaultMode: 0400
+        {{- end }}
+        {{- if .Values.extraVolumes }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes "context" $) | nindent 8 }}
+        {{- end }}
