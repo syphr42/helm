@@ -35,7 +35,7 @@ spec:
           image: "{{ .Values.gitConfig.image.repository }}:{{ .Values.gitConfig.image.tag }}"
           imagePullPolicy: {{ .Values.gitConfig.image.pullPolicy }}
           volumeMounts:
-          - name: data
+          - name: git-conf
             mountPath: /data
           {{- if .Values.gitConfig.secretName }}
           - name: git-secret
@@ -119,11 +119,16 @@ spec:
               mountPath: /openhab/userdata
               subPath: userdata
             - name: data
-              mountPath: /openhab/conf
-              subPath: conf
-            - name: data
               mountPath: /openhab/addons
               subPath: addons
+            {{- if .Values.gitConfig.enabled }}
+            - name: git-conf
+              mountPath: /git-conf
+            {{- else }}
+            - name: data
+              mountPath: /openhab/conf
+              subPath: conf
+            {{- end }}
             {{- if .Values.extraVolumeMounts }}
             {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
             {{- end }}
@@ -134,6 +139,10 @@ spec:
               value: {{ .Values.environment.groupId | quote }}
             - name: EXTRA_JAVA_OPTS
               value: "-Duser.timezone={{ .Values.environment.timezone }} {{ .Values.environment.extraJavaOpts }}"
+            {{- if .Values.gitConfig.enabled }}
+            - name: OPENHAB_CONF
+              value: /git-conf/conf
+            {{- end }}
             {{- if .Values.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
@@ -153,7 +162,7 @@ spec:
           image: "{{ .Values.gitConfig.image.repository }}:{{ .Values.gitConfig.image.tag }}"
           imagePullPolicy: {{ .Values.gitConfig.image.pullPolicy }}
           volumeMounts:
-          - name: data
+          - name: git-conf
             mountPath: /data
           {{- if .Values.gitConfig.secretName }}
           - name: git-secret
@@ -203,6 +212,10 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
+        {{- if .Values.gitConfig.enabled }}
+        - name: git-conf
+          emptyDir: {}
+        {{- end }}
         {{- if and .Values.gitConfig.enabled .Values.gitConfig.secretName }}
         - name: git-secret
           secret:
