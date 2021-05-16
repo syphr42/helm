@@ -155,7 +155,7 @@ spec:
             - secretRef:
                 name: {{ .Values.extraEnvVarsSecret }}
             {{- end }}
-        {{- if .Values.gitConfig.enabled }}
+        {{- if and .Values.gitConfig.enabled (ge .Values.gitConfig.syncWait 0.0) }}
         - name: config-git-sync
           securityContext:
             {{- toYaml .Values.gitConfig.securityContext | nindent 12 }}

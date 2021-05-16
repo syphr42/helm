@@ -219,8 +219,10 @@ gitConfig:
   ##
   branch: main
   ## Seconds to wait between syncs after initial
+  ## A negative number disables syncing side car (sync only happens at startup)
+  ## Enabling this with OH 3.0.2 or earlier causes all config to disappear from OH after a sync
   ##
-  syncWait: 300
+  syncWait: -1
   ## Secret keys:
   ##   ssh: private SSH key to authenticate with Git server
   ##
