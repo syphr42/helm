@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  cert-authority:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2021-05-16T02:17:55.378730801Z"
+    description: Syphr Certificate Authority
+    digest: 3da17407c4749336eb9efa1bb3a970821b096acbb110320d130af362db4a3a15
+    name: cert-authority
+    type: application
+    urls:
+    - https://github.com/syphr42/helm/releases/download/cert-authority-1.0.0/cert-authority-1.0.0.tgz
+    version: 1.0.0
   logitech-media-server:
   - apiVersion: v2
     appVersion: 8.1.1
@@ -85,4 +96,4 @@ entries:
     urls:
     - https://github.com/syphr42/helm/releases/download/wekan-1.0.0/wekan-1.0.0.tgz
     version: 1.0.0
-generated: "2021-05-15T01:57:35.601040893Z"
+generated: "2021-05-16T02:17:55.378743202Z"
