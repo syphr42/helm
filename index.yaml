@@ -100,6 +100,17 @@ entries:
   webtts:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2021-09-06T04:49:01.124552123Z"
+    description: WebTTS provides an easy Text-To-Speech service implementation using
+      Pico TTS, Apache, and PHP
+    digest: e19d5cb51940e6c05aab3c8a2cc4e288a8fcf86ff1475d9b08f04c7143fb3851
+    name: webtts
+    type: application
+    urls:
+    - https://github.com/syphr42/helm/releases/download/webtts-2.0.0/webtts-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2021-03-20T19:41:26.879018163Z"
     description: WebTTS provides an easy Text-To-Speech service implementation using
       Pico TTS, Apache, and PHP
@@ -124,4 +135,4 @@ entries:
     urls:
     - https://github.com/syphr42/helm/releases/download/wekan-1.0.0/wekan-1.0.0.tgz
     version: 1.0.0
-generated: "2021-05-16T21:38:17.24863401Z"
+generated: "2021-09-06T04:49:01.124672624Z"
