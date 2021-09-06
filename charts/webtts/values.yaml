@@ -40,6 +40,8 @@ service:
   type: ClusterIP
   port: 80
 
+## Ingress parameters
+##
 ingress:
   enabled: false
   annotations: {}
