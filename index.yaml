@@ -13,6 +13,20 @@ entries:
     version: 1.0.0
   logitech-media-server:
   - apiVersion: v2
+    appVersion: 8.2.0
+    created: "2021-09-06T17:12:08.074035376Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.4.2
+    description: Controller for physical and virtual music players
+    digest: af557cd2d32fbffc6a4f5069f0062a75758be5c459f91968c7bf402baf5db256
+    name: logitech-media-server
+    type: application
+    urls:
+    - https://github.com/syphr42/helm/releases/download/logitech-media-server-1.1.0/logitech-media-server-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     appVersion: 8.1.1
     created: "2021-05-15T01:57:35.465220195Z"
     dependencies:
@@ -135,4 +149,4 @@ entries:
     urls:
     - https://github.com/syphr42/helm/releases/download/wekan-1.0.0/wekan-1.0.0.tgz
     version: 1.0.0
-generated: "2021-09-06T04:49:01.124672624Z"
+generated: "2021-09-06T17:12:08.074058678Z"
