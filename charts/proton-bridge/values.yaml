@@ -29,7 +29,7 @@ service:
   ports:
     ## SMTP port (TCP)
     ##
-    smtpPort: 25
+    smtpPort: 587
   ## Specify the externalIP value ClusterIP service type.
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
   ##
