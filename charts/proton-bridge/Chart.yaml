@@ -1,0 +1,8 @@
+apiVersion: v2
+name: proton-bridge
+description: Proton Bridge provides a local SMTP proxy to Proton
+
+type: application
+appVersion: "2.3.0"
+
+version: 0.1.0
