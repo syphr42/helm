@@ -58,6 +58,12 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: BRIDGE_GPG_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.protonBridge.pgpKey.secretName }}
+                  key: {{ .Values.protonBridge.pgpKey.secretKey }}
           volumeMounts:
             - name: password-store
               mountPath: /root/.password-store
