@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "proton-bridge.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: 1
-  {{- end }}
   selector:
     matchLabels:
       {{- include "proton-bridge.selectorLabels" . | nindent 6 }}
