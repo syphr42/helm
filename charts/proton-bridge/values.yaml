@@ -79,6 +79,8 @@ protonBridge:
   pgpKey:
     secretName: proton-bridge-keys
     secretKey: pgp-key
+  ## Tarball (gzipped) of the password cache created by logging into Proton Bridge interactively.
+  ##
   passwordStore:
     secretName: proton-bridge-keys
-    secretKey: password-store
+    secretKey: password-store-tar
