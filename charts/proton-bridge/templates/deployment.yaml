@@ -39,6 +39,7 @@ spec:
             - /input/password-store.tar.gz
             - --directory
             - /output
+            - --no-same-owner
           securityContext:
             runAsUser: 0
           volumeMounts:
