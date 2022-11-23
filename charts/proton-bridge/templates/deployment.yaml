@@ -41,7 +41,7 @@ spec:
             - /output
             - --no-same-owner
           securityContext:
-            runAsUser: 0
+            {{- toYaml .Values.securityContext | nindent 12 }}
           volumeMounts:
             - name: password-store-tar
               mountPath: /input
