@@ -24,7 +24,14 @@ jobs:
         with:
           version: latest
 
+      # https://github.com/helm/chart-releaser-action/issues/74#issuecomment-1206111172
+      - name: Add dependent Helm repositories (required with Chart.lock)
+        run: |
+          for dir in $(ls -d charts/*/); do
+            helm dependency list $dir 2> /dev/null | tail +2 | head -n -1 | awk '{ print "helm repo add " $1 " " $3 }' | while read cmd; do echo "$cmd"; done
+          done
+
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.4.1
+        uses: helm/chart-releaser-action@v1
         env:
           CR_TOKEN: "${{ secrets.TOKEN_GITHUB }}"
