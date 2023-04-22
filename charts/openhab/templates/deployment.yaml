@@ -139,6 +139,8 @@ spec:
               value: {{ .Values.environment.groupId | quote }}
             - name: EXTRA_JAVA_OPTS
               value: "-Duser.timezone={{ .Values.environment.timezone }} {{ .Values.environment.extraJavaOpts }}"
+            - name: CRYPTO_POLICY
+              value: {{ .Values.environment.cryptoPolicy | quote }}
             {{- if .Values.gitConfig.enabled }}
             - name: OPENHAB_CONF
               value: /git-conf/conf

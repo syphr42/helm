@@ -188,7 +188,8 @@ environment:
   userId: 1000
   groupId: 1000
   timezone: UTC
-  extraJavaOpts:
+  cryptoPolicy: unlimited
+  extraJavaOpts: ""
 
 ## An array to add extra env vars
 ##
