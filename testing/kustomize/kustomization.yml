@@ -1,0 +1,7 @@
+resources:
+  - all.yml
+patches:
+  - path: dnsconfig.yml
+    target:
+      kind: StatefulSet
+      name: ".*"
