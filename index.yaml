@@ -260,6 +260,20 @@ entries:
   wekan:
   - apiVersion: v2
     appVersion: v5.17
+    created: "2023-05-20T19:24:24.68863016Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Virtual kanban board
+    digest: b20fe676e1638436be34534537032bcb7d1dc12c43a8dc17c59f1e525f0210b4
+    name: wekan
+    type: application
+    urls:
+    - https://github.com/syphr42/helm/releases/download/wekan-2.0.1/wekan-2.0.1.tgz
+    version: 2.0.1
+  - apiVersion: v2
+    appVersion: v5.17
     created: "2023-05-20T19:21:07.757936461Z"
     dependencies:
     - name: common
@@ -300,4 +314,4 @@ entries:
     urls:
     - https://github.com/syphr42/helm/releases/download/wekan-1.0.0/wekan-1.0.0.tgz
     version: 1.0.0
-generated: "2023-05-20T19:21:07.75824936Z"
+generated: "2023-05-20T19:24:24.68870326Z"
