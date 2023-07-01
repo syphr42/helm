@@ -112,6 +112,20 @@ entries:
     version: 1.0.0
   openhab:
   - apiVersion: v2
+    appVersion: 3.4.4
+    created: "2023-07-01T21:02:52.42269924Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Open source automation software for your home
+    digest: e8317eb4e3d8d82f55d2b6b00b5ed1c10c45015fdac5a9c63dfd80d729f10dab
+    name: openhab
+    type: application
+    urls:
+    - https://github.com/syphr42/helm/releases/download/openhab-1.5.0/openhab-1.5.0.tgz
+    version: 1.5.0
+  - apiVersion: v2
     appVersion: 3.3.0
     created: "2023-05-14T16:09:16.592388575Z"
     dependencies:
@@ -314,4 +328,4 @@ entries:
     urls:
     - https://github.com/syphr42/helm/releases/download/wekan-1.0.0/wekan-1.0.0.tgz
     version: 1.0.0
-generated: "2023-05-20T19:24:24.68870326Z"
+generated: "2023-07-01T21:02:52.422975446Z"
